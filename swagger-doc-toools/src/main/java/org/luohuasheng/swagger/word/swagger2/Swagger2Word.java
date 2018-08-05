@@ -12,6 +12,7 @@ import org.luohuasheng.swagger.tools.ZipTools;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,10 +29,19 @@ public class Swagger2Word {
             } else if (!outDir.endsWith("/")) {
                 outDir = outDir + "/";
             }
+            exportDoc(swagger, new FileOutputStream(new File(outDir + name + ".docx")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void exportDoc(Swagger swagger, OutputStream out) {
+        try {
+
             File outTempFile = File.createTempFile("temp", ".xml");
             TemplateTools.createFile(buildTemplateData(swagger), "template.ftl", outTempFile.getCanonicalPath());
             ZipInputStream zipInputStream = ZipTools.wrapZipInputStream(Swagger2Word.class.getClassLoader().getResourceAsStream("template.docx"));
-            ZipOutputStream zipOutputStream = ZipTools.wrapZipOutputStream(new FileOutputStream(new File(outDir + name + ".docx")));
+            ZipOutputStream zipOutputStream = ZipTools.wrapZipOutputStream(out);
             String itemname = "word/document.xml";
             ZipTools.replaceItem(zipInputStream, zipOutputStream, itemname, new FileInputStream(new File(outTempFile.getCanonicalPath())));
             outTempFile.deleteOnExit();//程序退出时删除临时文件

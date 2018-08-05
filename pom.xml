@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>swagger-common-toools</module>
-        <module>swagger-word-toools</module>
+        <module>swagger-doc-toools</module>
         <module>swagger-markdown-toools</module>
         <module>swagger-tools-boot</module>
     </modules>
